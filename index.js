@@ -34,7 +34,7 @@ app.delete('/todos/:todoId', async(req, res)=>{
     }
 });
 //creating a todo
-app.post('/todos/', async (req, res)=>{
+app.post('/todos', async (req, res)=>{
     const todo = todoModel.create({
         title: req.body.title,
         body: req.body.body,
@@ -53,7 +53,7 @@ app.post('/todos/', async (req, res)=>{
     }
 });
 //get all todos
-app.get('/todos/',async(req, res)=>{
+app.get('/todos',async(req, res)=>{
     try {
        const getTodo = await todoModel.find();
        res.json({message:'Todos successfullly retrieved',

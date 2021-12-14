@@ -17,7 +17,7 @@ const todoSchema = mongoose.Schema({
     endDate:{
         type: String,
         
-        required: true
+       
     }
 });
 

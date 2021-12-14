@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 require('dotenv/config');
 const todoModel = require('./models/todoModel');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 const app = express();
 //middleware
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(cors());
 //routes
 app.get('/',(req, res)=>{
 res.send('we are in the root folder');
@@ -66,17 +68,37 @@ app.get('/todos',async(req, res)=>{
 });
 //get a particular todo by its id
 
-app.get('/todos/:todoId', async(req, res)=>{
-    try{
-   const getOneTodo = await todoModel.findById({_id:req.params.todoId});
-   res.json({data: getOneTodo,
-    message: "Todo successfully retrieved"
-});
-    } catch (err) {
-        res.json({message: err});
+app.get('/todos',async (req,res)=>{
+    const {status} = req.params;
+    
+    const todoModel = await TodoModel.find({}).where('status').equals(status);
+    if(todoModel){
+        return res.status(200).json({
+            status:true,
+            message: 'Todos fetched successfully',
+            data: todoModel
+        })
+    }else{
+        return res.status(400).json({
+            status:false,
+            message: 'Todos not found'
+        })
     }
-});
+    });app.get('/todos/:todoId',async(req, res)=>{
+        try {
+           const getTodo = await todoModel.findById(req.params.todoId);
+           res.json({message:'Todos successfullly retrieved',
+             data: getTodo,
+        });
+        } catch (err) {
+            res.json({message: err});
+            
+        }
+    });
+    
 //database connection
-mongoose.connect(process.env.DB_URL,()=>console.log('successfully connected'));
-//port to listen to requests
-app.listen(process.env.PORT_NUMBER || 2021);
+
+mongoose.connect(process.env.DB_URL, {useNewUrlParser: true, useUnifiedTopology: true},
+    ()=>console.log('successfully connected'));
+
+app.listen( 1002|| process.env.PORT_NUMBER);

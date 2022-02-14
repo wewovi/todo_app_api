@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const todoModel = require("./models/todoModel");
+const bodyParser = require("body-parser");
 const cors = require("cors");
 
 dotenv.config();
@@ -98,13 +99,11 @@ app.get("/todos/:todoId", async (req, res) => {
 
 //database connection
 
-mongoose
-  .connect(process.env.DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("successfully connected"))
-  .catch((err) => console.log("error : ", err));
+mongoose.connect(
+  process.env.DB_URL,
+  { useNewUrlParser: true, useUnifiedTopology: true },
+  () => console.log("successfully connected")
+);
 
 const port = process.env.PORT_NUMBER || 1002;
 

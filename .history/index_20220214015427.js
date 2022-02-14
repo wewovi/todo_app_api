@@ -106,6 +106,6 @@ mongoose
   .then(() => console.log("successfully connected"))
   .catch((err) => console.log("error : ", err));
 
-const port = process.env.PORT || 8085;
+const port = process.env.PORT || 1002;
 
 app.listen(port, () => console.log(`server is running on port ${port}`));
